@@ -17,10 +17,7 @@ cinco_estrelas = dados.contar_cinco_estrelas(livros)
 maior_livro = dados.acha_mais_caro(livros)
 
 #Display dos dados
-col4.metric(
-    label=f"Livro mais caro: {maior_livro['titulo']}",
-    value=maior_livro["preco"]
-)
+col4.metric( label="Livro mais caro", value=maior_livro["preco"], delta=maior_livro["titulo"], delta_color="off")
 col3.metric("Total cinco estrelas", cinco_estrelas)
 col2.metric("Preço médio", f"£{preco_medio}")   
 col1.metric("Total de Livros", qtd_livros)
