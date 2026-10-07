@@ -49,7 +49,8 @@ def main():
     
 
     col1, col2, col3, col4 = st.columns(4)
-    
+    qtd_livros = len(livros)
+    col1.metric("Total de Livros", qtd_livros)
 
     preco_medio = dados.calcular_preco_medio(livros)
     col2.metric("Preço médio", f"£{preco_medio:.2f}")
@@ -63,15 +64,12 @@ def main():
 
     busca = st.text_input(label="Buscar livro", type="search")
     livros_busca = dados.busca_por_titulo(livros, busca)
-
-    if len(livros_busca) == 0:
+    qtd_livros_encontrados = len(livros_busca)
+    if qtd_livros_encontrados == 0:
         st.warning("Nenhum livro encontrado")
-        qtd_livros = len(livros_busca)
-        col1.metric("Total de Livros", qtd_livros)
     else:
-        qtd_livros = len(livros_busca)
-        col1.metric("Total de Livros", qtd_livros)
         tabela = montar_tabela(livros_busca)
+        st.caption(f"{qtd_livros_encontrados} livros encontrados")
         st.dataframe(tabela)
 
 
