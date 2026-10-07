@@ -46,7 +46,7 @@ def main():
     st.title("📚 Dashboard de Livros")
 
     livros = dados.carregar_livros()
-    tabela = montar_tabela(livros)
+    
 
     col1, col2, col3, col4 = st.columns(4)
     qtd_livros = len(livros)
@@ -62,7 +62,14 @@ def main():
     col4.metric("Livro mais caro", f"£{mais_caro["preco"]}")
     col4.caption(mais_caro["titulo"])
 
-    st.dataframe(tabela)
+    busca = st.text_input(label="Buscar livro", type="search")
+    livros_busca = dados.busca_por_titulo(livros, busca)
+
+    if len(livros_busca) == 0:
+        st.warning("Nenhum livro encontrado")
+    else:
+        tabela = montar_tabela(livros_busca)
+        st.dataframe(tabela)
 
 
 if __name__ == "__main__":

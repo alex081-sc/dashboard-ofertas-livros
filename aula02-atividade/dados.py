@@ -94,7 +94,19 @@ def carregar_livros():
     return preparar_livros(ler_livros())
 
 
+def busca_por_titulo(livros, busca):
+    livros_encontrados = []
+    busca_limpa= busca.lower().strip()
+    for livro in livros:
+        livro_limpo = livro["titulo"].lower().strip()
+        if busca_limpa in livro_limpo:
+            livros_encontrados.append(livro)
+    return livros_encontrados
+
 if __name__ == "__main__":
     livros = ler_livros()
     print(f"{len(livros)} livros carregados")
     print("Primeiro livro:", livros[0])
+    livros_busca = busca_por_titulo(livros, "HaRRy")
+    for livro in livros_busca:
+        print("livro encontrado ", livro["titulo"])
