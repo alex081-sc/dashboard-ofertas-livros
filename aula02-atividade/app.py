@@ -40,14 +40,33 @@ def contar_por_faixa(livros):
 
     return contagem
 
+def listar_categorias(livros):
+    categorias = []
+    for livro in livros:
+        if livro["categoria"] not  in categorias:
+            categorias.append(livro["categoria"])
+
+    categorias.sort()
+    return categorias
+
+def filtrar_por_categoria(livros, categoria):
+    if categoria == "Todas":
+        return livros
+    
+    resultado = []
+    for livro in livros:
+        if livro["categoria"] == categoria:
+            resultado.append(livro)
+        
+    return resultado
+
 
 def main():
     st.set_page_config(page_title="Dashboard de Livros", page_icon="📚", layout="wide")
     st.title("📚 Dashboard de Livros")
 
     livros = dados.carregar_livros()
-    
-
+  
     col1, col2, col3, col4 = st.columns(4)
     qtd_livros = len(livros)
     col1.metric("Total de Livros", qtd_livros)
@@ -62,8 +81,16 @@ def main():
     col4.metric("Livro mais caro", f"£{mais_caro["preco"]}")
     col4.caption(mais_caro["titulo"])
 
-    busca = st.text_input(label="Buscar livro", type="search")
-    livros_busca = dados.busca_por_titulo(livros, busca)
+    col_busca, col_categoria = st.columns(2)
+
+    busca = col_busca.text_input(label="Buscar livro", type="search")
+    categoria = col_categoria.selectbox("Filtrar por categoria", ["Todas"] + listar_categorias(livros))
+
+    livros_categorias = filtrar_por_categoria(livros, categoria)
+    livros_busca = dados.busca_por_titulo(livros_categorias, busca)
+    
+    
+
     qtd_livros_encontrados = len(livros_busca)
     if qtd_livros_encontrados == 0:
         st.warning("Nenhum livro encontrado")
